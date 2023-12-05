@@ -58,7 +58,7 @@ def se3_log_map(T: torch.Tensor):
     B = taylor_B(theta)
     D = (1 - A / (2 * B)) / theta.pow(2)
 
-    V_inv = torch.eye(3) - 0.5 * log_R + D * log_R_2
+    V_inv = torch.eye(3, dtype=A.dtype, device=A.device) - 0.5 * log_R + D * log_R_2
     log_t_vee = torch.einsum("bij, bj -> bi", V_inv, t)
 
     return torch.concat([log_R_vee, log_t_vee], dim=-1)
