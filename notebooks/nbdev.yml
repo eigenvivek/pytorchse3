@@ -3,7 +3,7 @@ project:
 
 website:
   title: "pytorchse3"
-  site-url: "https://eigenvivek.github.io/pytorchse3"
+  site-url: "https://vivekg.dev/pytorchse3"
   description: "Numerically stable implementations of batched SE(3) exp and log maps"
   repo-branch: main
   repo-url: "https://github.com/eigenvivek/pytorchse3"

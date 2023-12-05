@@ -37,18 +37,7 @@ T = torch.Tensor(
         ],
     ],
 ).transpose(-1, -2)
-T
 ```
-
-    tensor([[[-0.7384,  0.3521, -0.5752, -0.1841],
-             [ 0.3333, -0.5509, -0.7651, -0.1837],
-             [-0.5862, -0.7567,  0.2894,  0.9953],
-             [ 0.0000,  0.0000,  0.0000,  1.0000]],
-
-            [[-0.7400,  0.5329, -0.4103, -0.1198],
-             [ 0.5210,  0.0684, -0.8508,  0.1799],
-             [-0.4253, -0.8434, -0.3283,  0.5539],
-             [ 0.0000,  0.0000,  0.0000,  1.0000]]])
 
 `pytorchse3` computes the correct log map.
 
@@ -65,6 +54,10 @@ with 1e-4 absolute error.
 
 ``` python
 eq_T = se3_exp_map(log_T_vee)
+assert torch.allclose(T, eq_T, atol=1e-4)
+```
+
+``` python
 T - eq_T
 ```
 
@@ -78,23 +71,15 @@ T - eq_T
              [-8.5831e-06,  1.0610e-05, -1.6809e-05,  0.0000e+00],
              [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00]]])
 
-``` python
-assert torch.allclose(
-    T,
-    eq_T,
-    atol=1e-4,
-)
-```
-
 ## References
 
 - `pytorchse3` implements log/exp maps defined in Section 2 and 3 of
   [Ethan Eade’s tutorial](https://ethaneade.com/lie.pdf)
 - Our numerically stable
-  [`so3_log_map`](https://eigenvivek.github.io/pytorchse3/so3.html#so3_log_map)
-  is a PyTorch port of
+  [`so3_log_map`](https://vivekg.dev/pytorchse3/so3.html#so3_log_map) is
+  a PyTorch port of
   [`pytransform3d`](https://github.com/dfki-ric/pytransform3d/blob/c45e817c4a7960108afe9f5259542c8376c0e89a/pytransform3d/rotations/_conversions.py#L1719-L1787)
 - Taylor expansions for some coefficients in
-  [`se3_log_map`](https://eigenvivek.github.io/pytorchse3/se3.html#se3_log_map)
+  [`se3_log_map`](https://vivekg.dev/pytorchse3/se3.html#se3_log_map)
   are taken from
   [`H2-Mapping`](https://github.com/SYSU-STAR/H2-Mapping/blob/11b8ab15f3302ccb2b4b3d2b30f76d86dcfcde2c/mapping/src/se3pose.py#L89-L118)

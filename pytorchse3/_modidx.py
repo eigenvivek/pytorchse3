@@ -2,7 +2,7 @@
 
 d = { 'settings': { 'branch': 'main',
                 'doc_baseurl': '/pytorchse3',
-                'doc_host': 'https://eigenvivek.github.io',
+                'doc_host': 'https://vivekg.dev',
                 'git_url': 'https://github.com/eigenvivek/pytorchse3',
                 'lib_path': 'pytorchse3'},
   'syms': { 'pytorchse3.core': {'pytorchse3.core.foo': ('core.html#foo', 'pytorchse3/core.py')},
