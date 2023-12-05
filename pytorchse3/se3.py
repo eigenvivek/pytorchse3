@@ -13,6 +13,7 @@ from .so3 import cross_product_matrix, so3_log_map
 Taylor expansions taken from : https://github.com/SYSU-STAR/H2-Mapping/blob/11b8ab15f3302ccb2b4b3d2b30f76d86dcfcde2c/mapping/src/se3pose.py#L89-L118
 """
 
+
 def taylor_A(x, nth=10):
     # Taylor expansion of sin(x)/x
     ans = torch.zeros_like(x)
@@ -51,12 +52,12 @@ def se3_log_map(T: torch.Tensor):
     log_R_vee = so3_log_map(R)
     log_R = cross_product_matrix(log_R_vee)
     log_R_2 = torch.linalg.matrix_power(log_R, 2)
-    
+
     theta = log_R_vee.norm(dim=-1, keepdim=True).unsqueeze(-1)
     A = taylor_A(theta)
     B = taylor_B(theta)
     D = (1 - A / (2 * B)) / theta.pow(2)
-    
+
     V_inv = torch.eye(3) - 0.5 * log_R + D * log_R_2
     log_t_vee = torch.einsum("bij, bj -> bi", V_inv, t)
 
@@ -70,15 +71,15 @@ def se3_exp_map(log_T_vee, n=10):
     theta = log_R_vee.norm(dim=-1, keepdim=True).unsqueeze(-1)
     log_R = cross_product_matrix(log_R_vee)
     log_R_2 = torch.linalg.matrix_power(log_R, 2)
-    
+
     A = taylor_A(theta, n)
     B = taylor_B(theta, n)
     C = taylor_C(theta, n)
-    
+
     R = torch.eye(3, dtype=A.dtype, device=A.device) + A * log_R + B * log_R_2
     V = torch.eye(3, dtype=A.dtype, device=A.device) + B * log_R + C * log_R_2
     t = torch.einsum("bij, bj -> bi", V, log_t_vee)
-    
+
     T = torch.zeros((len(theta), 4, 4), dtype=A.dtype, device=A.device)
     T[..., :3, :3] = R
     T[..., :3, 3] = t
