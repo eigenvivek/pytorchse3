@@ -7,44 +7,9 @@ __all__ = ['se3_log_map', 'se3_exp_map']
 import torch
 
 from .so3 import cross_product_matrix, so3_log_map
+from .utils import taylor_A, taylor_B, taylor_C
 
 # %% ../notebooks/01_se3.ipynb 5
-"""
-Taylor expansions taken from : https://github.com/SYSU-STAR/H2-Mapping/blob/11b8ab15f3302ccb2b4b3d2b30f76d86dcfcde2c/mapping/src/se3pose.py#L89-L118
-"""
-
-
-def taylor_A(x, nth=10):
-    # Taylor expansion of sin(x)/x
-    ans = torch.zeros_like(x)
-    denom = 1.0
-    for i in range(nth + 1):
-        if i > 0:
-            denom *= (2 * i) * (2 * i + 1)
-        ans = ans + (-1) ** i * x ** (2 * i) / denom
-    return ans
-
-
-def taylor_B(x, nth=10):
-    # Taylor expansion of (1-cos(x))/x**2
-    ans = torch.zeros_like(x)
-    denom = 1.0
-    for i in range(nth + 1):
-        denom *= (2 * i + 1) * (2 * i + 2)
-        ans = ans + (-1) ** i * x ** (2 * i) / denom
-    return ans
-
-
-def taylor_C(x, nth=10):
-    # Taylor expansion of (x-sin(x))/x**3
-    ans = torch.zeros_like(x)
-    denom = 1.0
-    for i in range(nth + 1):
-        denom *= (2 * i + 2) * (2 * i + 3)
-        ans = ans + (-1) ** i * x ** (2 * i) / denom
-    return ans
-
-# %% ../notebooks/01_se3.ipynb 6
 def se3_log_map(T: torch.Tensor):
     R = T[..., :3, :3]
     t = T[..., :3, 3]
@@ -63,7 +28,7 @@ def se3_log_map(T: torch.Tensor):
 
     return torch.concat([log_R_vee, log_t_vee], dim=-1)
 
-# %% ../notebooks/01_se3.ipynb 8
+# %% ../notebooks/01_se3.ipynb 7
 def se3_exp_map(log_T_vee, n=10):
     log_R_vee = log_T_vee[..., :3]
     log_t_vee = log_T_vee[..., 3:]
