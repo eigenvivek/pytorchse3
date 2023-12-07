@@ -11,4 +11,8 @@ d = { 'settings': { 'branch': 'main',
                                 'pytorchse3.se3.taylor_B': ('se3.html#taylor_b', 'pytorchse3/se3.py'),
                                 'pytorchse3.se3.taylor_C': ('se3.html#taylor_c', 'pytorchse3/se3.py')},
             'pytorchse3.so3': { 'pytorchse3.so3.cross_product_matrix': ('so3.html#cross_product_matrix', 'pytorchse3/so3.py'),
-                                'pytorchse3.so3.so3_log_map': ('so3.html#so3_log_map', 'pytorchse3/so3.py')}}}
+                                'pytorchse3.so3.so3_exp_map': ('so3.html#so3_exp_map', 'pytorchse3/so3.py'),
+                                'pytorchse3.so3.so3_log_map': ('so3.html#so3_log_map', 'pytorchse3/so3.py')},
+            'pytorchse3.utils': { 'pytorchse3.utils.taylor_A': ('utils.html#taylor_a', 'pytorchse3/utils.py'),
+                                  'pytorchse3.utils.taylor_B': ('utils.html#taylor_b', 'pytorchse3/utils.py'),
+                                  'pytorchse3.utils.taylor_C': ('utils.html#taylor_c', 'pytorchse3/utils.py')}}}
