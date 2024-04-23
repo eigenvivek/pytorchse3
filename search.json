@@ -1,0 +1,112 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "pytorchse3",
+    "section": "",
+    "text": "pip install pytorchse3",
+    "crumbs": [
+      "pytorchse3"
+    ]
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "pytorchse3",
+    "section": "",
+    "text": "pip install pytorchse3",
+    "crumbs": [
+      "pytorchse3"
+    ]
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "pytorchse3",
+    "section": "How to use",
+    "text": "How to use\n\nimport torch\n\nfrom pytorchse3.se3 import se3_exp_map, se3_log_map\n\nHere are two transformation matrices for which PyTorch3D recovers the wrong log map (see this issue).\n\nT = torch.Tensor(\n    [\n        [\n            [-0.7384057045, 0.3333132863, -0.5862244964, 0.0000000000],\n            [0.3520625532, -0.5508944392, -0.7566816807, 0.0000000000],\n            [-0.5751599669, -0.7651259303, 0.2894364297, 0.0000000000],\n            [-0.1840534210, -0.1836946011, 0.9952554703, 1.0000000000],\n        ],\n        [\n            [-0.7400283217, 0.5210028887, -0.4253400862, 0.0000000000],\n            [0.5329059958, 0.0683888718, -0.8434065580, 0.0000000000],\n            [-0.4103286564, -0.8508108258, -0.3282552958, 0.0000000000],\n            [-0.1197679043, 0.1799146235, 0.5538908839, 1.0000000000],\n        ],\n    ],\n).transpose(-1, -2)\n\npytorchse3 computes the correct log map.\n\nlog_T_vee = se3_log_map(T)\nlog_T_vee\n\ntensor([[ 1.1319,  1.4831, -2.5131, -0.8503, -0.1170,  0.7346],\n        [ 1.1288,  2.2886, -1.8147, -0.8812,  0.0367, -0.1004]])\n\n\nExponentiating the log map recovers the original transformation matrix with 1e-4 absolute error.\n\neq_T = se3_exp_map(log_T_vee)\nassert torch.allclose(T, eq_T, atol=1e-4)\n\n\nT - eq_T\n\ntensor([[[-9.2983e-06, -2.3842e-07,  1.1504e-05,  2.9802e-08],\n         [-5.1558e-06,  8.5235e-06, -8.6427e-06, -2.9802e-08],\n         [ 8.6427e-06, -6.4373e-06,  4.4703e-07,  0.0000e+00],\n         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00]],\n\n        [[ 8.0466e-06,  1.6212e-05,  6.0201e-06, -3.7253e-08],\n         [ 4.5896e-06,  8.6352e-06,  3.3975e-06,  2.9802e-08],\n         [-8.5831e-06,  1.0610e-05, -1.6809e-05,  0.0000e+00],\n         [ 0.0000e+00,  0.0000e+00,  0.0000e+00,  0.0000e+00]]])",
+    "crumbs": [
+      "pytorchse3"
+    ]
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "pytorchse3",
+    "section": "References",
+    "text": "References\n\npytorchse3 implements log/exp maps defined in Section 2 and 3 of Ethan Eade’s tutorial\nOur numerically stable so3_log_map is a PyTorch port of pytransform3d\nTaylor expansions for some coefficients in se3_log_map are taken from H2-Mapping",
+    "crumbs": [
+      "pytorchse3"
+    ]
+  },
+  {
+    "objectID": "utils.html",
+    "href": "utils.html",
+    "title": "utils",
+    "section": "",
+    "text": "Taylor expansions are taken from H2-Mapping.\n\nsource\n\ntaylor_C\n\n taylor_C (x, nth=10)\n\n\nsource\n\n\ntaylor_B\n\n taylor_B (x, nth=10)\n\n\nsource\n\n\ntaylor_A\n\n taylor_A (x, nth=10)",
+    "crumbs": [
+      "utils"
+    ]
+  },
+  {
+    "objectID": "so3.html",
+    "href": "so3.html",
+    "title": "so3",
+    "section": "",
+    "text": "The log map on SO(3) is equivalent to finding the axis-angle of rotation corresponding to a rotation matrix \\(\\mathbf R\\). This is numerically unstable near rotations \\(\\theta = 0\\) or \\(\\theta = \\pi\\).\nWe port the numerically stable implementation for pytransform3d to PyTorch to enable batched computation of multiple transformations on a GPU.\n\nsource\n\n\n\n so3_log_map (R:torch.Tensor)\n\nFind the axis of rotation for a rotation matrix R. The norm of the axis corresponds to the angle of rotation.\n\nsource\n\n\n\n\n cross_product_matrix (axis_angle)\n\nConvert the axis-angle to the matrix log(R).",
+    "crumbs": [
+      "so3"
+    ]
+  },
+  {
+    "objectID": "so3.html#log-map",
+    "href": "so3.html#log-map",
+    "title": "so3",
+    "section": "",
+    "text": "The log map on SO(3) is equivalent to finding the axis-angle of rotation corresponding to a rotation matrix \\(\\mathbf R\\). This is numerically unstable near rotations \\(\\theta = 0\\) or \\(\\theta = \\pi\\).\nWe port the numerically stable implementation for pytransform3d to PyTorch to enable batched computation of multiple transformations on a GPU.\n\nsource\n\n\n\n so3_log_map (R:torch.Tensor)\n\nFind the axis of rotation for a rotation matrix R. The norm of the axis corresponds to the angle of rotation.\n\nsource\n\n\n\n\n cross_product_matrix (axis_angle)\n\nConvert the axis-angle to the matrix log(R).",
+    "crumbs": [
+      "so3"
+    ]
+  },
+  {
+    "objectID": "so3.html#exp-map",
+    "href": "so3.html#exp-map",
+    "title": "so3",
+    "section": "Exp map",
+    "text": "Exp map\n\nsource\n\nso3_exp_map\n\n so3_exp_map (log_R_vee, n=10)",
+    "crumbs": [
+      "so3"
+    ]
+  },
+  {
+    "objectID": "se3.html",
+    "href": "se3.html",
+    "title": "se3",
+    "section": "",
+    "text": "source\n\n\n\n se3_log_map (T:torch.Tensor)",
+    "crumbs": [
+      "se3"
+    ]
+  },
+  {
+    "objectID": "se3.html#log-map",
+    "href": "se3.html#log-map",
+    "title": "se3",
+    "section": "",
+    "text": "source\n\n\n\n se3_log_map (T:torch.Tensor)",
+    "crumbs": [
+      "se3"
+    ]
+  },
+  {
+    "objectID": "se3.html#exp-map",
+    "href": "se3.html#exp-map",
+    "title": "se3",
+    "section": "Exp map",
+    "text": "Exp map\n\nsource\n\nse3_exp_map\n\n se3_exp_map (log_T_vee, n=10)",
+    "crumbs": [
+      "se3"
+    ]
+  }
+]
